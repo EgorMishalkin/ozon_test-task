@@ -1,8 +1,8 @@
 import time
 from http import HTTPStatus
-
 import requests
 from requests.exceptions import HTTPError
+
 
 def get_heroes_data(url):
     retries = 3
@@ -32,6 +32,7 @@ def get_heroes_data(url):
             raise
     return None
 
+
 def highest_character(gender, has_job):
     heroes_data = get_heroes_data(url="https://akabab.github.io/superhero-api/api/all.json")
     highest_height = 0
@@ -48,7 +49,8 @@ def highest_character(gender, has_job):
     return highest_hero
 
 
-character = highest_character('Female', True)
-print(character["name"])
-print(float(character["appearance"]["height"][1].split()[0]))
-print(character["work"]["occupation"])
+if __name__ == "__main__":
+    character = highest_character('Female', True)
+    print(character["name"])
+    print(float(character["appearance"]["height"][1].split()[0]))
+    print(character["work"]["occupation"])
