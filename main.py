@@ -34,14 +34,21 @@ def get_heroes_data(url):
 
 def highest_character(gender, has_job):
     heroes_data = get_heroes_data(url="https://akabab.github.io/superhero-api/api/all.json")
-    highest_hero = None
     highest_height = 0
-    return
+    highest_hero = None
+    for character_stats in heroes_data:
+        character_job = character_stats["work"]["occupation"] != "-"
 
-# heroes_data = get_heroes_data("https://akabab.github.io/superhero-api/api/all.json")
-# print(heroes_data)
-# for character_stats in heroes_data:
-#    print(character_stats["name"])
-#    print(character_stats["appearance"]["gender"])
-#    print(float(character_stats["appearance"]["height"][1].split()[0]))
-#    print(character_stats["work"]["occupation"])
+        if character_stats["appearance"]["gender"] == gender:
+            if character_job == has_job:
+                character_height = float(character_stats["appearance"]["height"][1].split()[0])
+                if character_height > highest_height:
+                    highest_height = character_height
+                    highest_hero = character_stats
+    return highest_hero
+
+
+character = highest_character('Female', True)
+print(character["name"])
+print(float(character["appearance"]["height"][1].split()[0]))
+print(character["work"]["occupation"])
