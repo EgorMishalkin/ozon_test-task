@@ -49,7 +49,10 @@ def highest_character(gender, has_job):
 
         if character_stats["appearance"]["gender"] == gender:
             if character_job == has_job:
-                character_height = float(character_stats["appearance"]["height"][1].split()[0])
+                try:
+                    character_height = float(character_stats["appearance"]["height"][1].split()[0])
+                except (ValueError, IndexError, TypeError, KeyError):
+                    continue
                 if character_height > highest_height:
                     highest_height = character_height
                     highest_hero = character_stats

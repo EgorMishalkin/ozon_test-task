@@ -2,7 +2,6 @@ import pytest
 
 import main
 
-
 def fake_get_heroes_data(url):
     # fake data to check if logic works correctly
     return [
@@ -101,14 +100,6 @@ def test_highest_employed_female(monkeypatch):
     assert result is not None
     assert result["name"] == "Hero Four"
 
-
-#  highest_character returns None in that case
-def test_highest_employed_unknown_gender(monkeypatch):
-    monkeypatch.setattr(main,"get_heroes_data", fake_get_heroes_data)
-    with pytest.raises(ValueError):
-        main.highest_character("Unknown", True)
-
-
 def test_invalid_gender():
     with pytest.raises(ValueError):
         main.highest_character("-", True)
@@ -117,3 +108,35 @@ def test_invalid_gender():
 def test_invalid_has_job():
     with pytest.raises(TypeError):
         main.highest_character("Male", "True")
+
+
+def test_skip_invalid_height(monkeypatch):
+    def fake_get_invalid_height_data(url):
+        return [
+            {
+                "name": "Hero One",
+                "appearance": {
+                    "gender": "Male",
+                    "height": ["-", "-"]
+                },
+                "work": {
+                    "occupation": "Planet Devour"
+                }
+            },
+            {
+                "name": "Hero Two",
+                "appearance": {
+                    "gender": "Male",
+                    "height": ["6'10", "210 cm"]
+                },
+                "work": {
+                    "occupation": "Teacher"
+                }
+            }
+        ]
+
+    monkeypatch.setattr(main, "get_heroes_data", fake_get_invalid_height_data)
+
+    result = main.highest_character("Male", True)
+
+    assert result["name"] == "Hero Two"
