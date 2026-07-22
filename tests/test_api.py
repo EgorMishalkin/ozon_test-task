@@ -59,3 +59,13 @@ def test_error_after_3_attempts(monkeypatch):
 
     assert result is None
     assert mock_get.call_count == 3
+
+
+def test_successful_response_after_retry(monkeypatch):
+    mock_get = Mock(side_effect=[FakeErrorResponse(500), FakeResponse()])
+    monkeypatch.setattr(main.requests, "get", mock_get)
+    monkeypatch.setattr(main.time, "sleep", lambda seconds: None)
+    result = main.get_heroes_data("fake-url")
+
+    assert result == data
+    assert mock_get.call_count == 2
