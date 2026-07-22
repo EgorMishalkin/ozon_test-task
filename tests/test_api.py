@@ -1,6 +1,7 @@
 import pytest
 import main
 from requests.exceptions import HTTPError
+from unittest.mock import Mock
 
 data = [{"name": "Test Hero"}]
 
@@ -17,7 +18,8 @@ def fake_get(url):
 
 
 class FakeErrorResponse:
-    status_code = 404
+    def __init__(self, status_code):
+        self.status_code = status_code
 
     def raise_for_status(self):
         error = HTTPError()
@@ -26,12 +28,15 @@ class FakeErrorResponse:
 
 
 def fake_get_404(url):
-    return FakeErrorResponse()
+    return FakeErrorResponse(404)
+
+
+def fake_get_500(url):
+    return FakeErrorResponse(500)
 
 
 def test_data_loaded_successfully(monkeypatch):
     monkeypatch.setattr(main.requests, "get", fake_get)
-
     result = main.get_heroes_data("fake-url")
 
     assert result == data
@@ -42,3 +47,15 @@ def test_non_retryable_error(monkeypatch):
 
     with pytest.raises(HTTPError):
         main.get_heroes_data("fake-url")
+
+
+def test_error_after_3_attempts(monkeypatch):
+    mock_get = Mock(side_effect=fake_get_500)
+
+    monkeypatch.setattr(main.requests, "get", mock_get)
+    monkeypatch.setattr(main.time, "sleep", lambda seconds: None)
+
+    result = main.get_heroes_data("fake-url")
+
+    assert result is None
+    assert mock_get.call_count == 3
