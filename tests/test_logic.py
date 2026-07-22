@@ -11,9 +11,7 @@ def fake_get_heroes_data(url):
                 "gender": "Male",
                 "height": ["5'11", "180 cm"]
             },
-            "work": {
-                "occupation": "Planet Devour"
-            }
+            "work": {"occupation": "Planet Devour"}
         },
         {
             "name": "Hero Two",
@@ -21,9 +19,7 @@ def fake_get_heroes_data(url):
                 "gender": "Male",
                 "height": ["6'10", "210 cm"]
             },
-            "work": {
-                "occupation": "Teacher"
-            }
+            "work": {"occupation": "Teacher"}
         },
         {
             "name": "Hero Three",
@@ -31,39 +27,27 @@ def fake_get_heroes_data(url):
                 "gender": "Male",
                 "height": ["8'2", "250 cm"]
             },
-            "work": {
-                "occupation": "-"
-            }
+            "work": {"occupation": "-"}
         },
-
         {
             "name": "Hero Four",
             "appearance": {
                 "gender": "Female",
                 "height": ["8'2", "175 cm"]
             },
-            "work": {
-                "occupation": "Streamer"
-            }},
-
+            "work": {"occupation": "Streamer"}},
         {   "name": "Hero Five",
             "appearance": {
                 "gender": "Female",
                 "height": ["8'2", "200 cm"]
             },
-            "work": {
-                "occupation": "-"
-            }},
-
-        {"name": "Hero Six",
+            "work": {"occupation": "-"}},
+        {   "name": "Hero Six",
             "appearance": {
                 "gender": "Female",
                 "height": ["8'2", "180 cm"]
             },
-            "work": {
-                "occupation": "-"
-            }},
-
+            "work": {"occupation": "-"}},
     ]
 
 
@@ -119,9 +103,7 @@ def test_skip_invalid_height(monkeypatch):
                     "gender": "Male",
                     "height": ["-", "-"]
                 },
-                "work": {
-                    "occupation": "Planet Devour"
-                }
+                "work": {"occupation": "Planet Devour"}
             },
             {
                 "name": "Hero Two",
@@ -129,9 +111,7 @@ def test_skip_invalid_height(monkeypatch):
                     "gender": "Male",
                     "height": ["6'10", "210 cm"]
                 },
-                "work": {
-                    "occupation": "Teacher"
-                }
+                "work": {"occupation": "Teacher"}
             }
         ]
 
