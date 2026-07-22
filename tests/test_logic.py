@@ -67,11 +67,7 @@ def fake_get_heroes_data(url):
 
 
 def test_highest_employed_male(monkeypatch):
-    monkeypatch.setattr(
-        main,
-        "get_heroes_data",
-        fake_get_heroes_data
-    )
+    monkeypatch.setattr(main,"get_heroes_data",fake_get_heroes_data)
 
     result = main.highest_character("Male", True)
 
@@ -80,11 +76,7 @@ def test_highest_employed_male(monkeypatch):
 
 
 def test_highest_unemployed_male(monkeypatch):
-    monkeypatch.setattr(
-        main,
-        "get_heroes_data",
-        fake_get_heroes_data
-    )
+    monkeypatch.setattr(main,"get_heroes_data",fake_get_heroes_data)
 
     result = main.highest_character("Male", False)
 
@@ -93,12 +85,7 @@ def test_highest_unemployed_male(monkeypatch):
 
 
 def test_highest_unemployed_female(monkeypatch):
-    monkeypatch.setattr(
-        main,
-        "get_heroes_data",
-        fake_get_heroes_data
-    )
-
+    monkeypatch.setattr(main,"get_heroes_data",fake_get_heroes_data)
     result = main.highest_character("Female", False)
 
     assert result is not None
@@ -106,12 +93,7 @@ def test_highest_unemployed_female(monkeypatch):
 
 
 def test_highest_employed_female(monkeypatch):
-    monkeypatch.setattr(
-        main,
-        "get_heroes_data",
-        fake_get_heroes_data
-    )
-
+    monkeypatch.setattr(main,"get_heroes_data", fake_get_heroes_data)
     result = main.highest_character("Female", True)
 
     assert result is not None
@@ -120,12 +102,7 @@ def test_highest_employed_female(monkeypatch):
 
 #  highest_character returns None in that case
 def test_highest_employed_unknown_gender(monkeypatch):
-    monkeypatch.setattr(
-        main,
-        "get_heroes_data",
-        fake_get_heroes_data
-    )
-
+    monkeypatch.setattr(main,"get_heroes_data", fake_get_heroes_data)
     result = main.highest_character("Unknown", True)
 
     assert result is None
