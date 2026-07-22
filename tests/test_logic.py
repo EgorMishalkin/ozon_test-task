@@ -1,3 +1,5 @@
+import pytest
+
 import main
 
 
@@ -103,7 +105,15 @@ def test_highest_employed_female(monkeypatch):
 #  highest_character returns None in that case
 def test_highest_employed_unknown_gender(monkeypatch):
     monkeypatch.setattr(main,"get_heroes_data", fake_get_heroes_data)
-    result = main.highest_character("Unknown", True)
+    with pytest.raises(ValueError):
+        main.highest_character("Unknown", True)
 
-    assert result is None
 
+def test_invalid_gender():
+    with pytest.raises(ValueError):
+        main.highest_character("-", True)
+
+
+def test_invalid_has_job():
+    with pytest.raises(TypeError):
+        main.highest_character("Male", "True")

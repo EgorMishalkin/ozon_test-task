@@ -13,7 +13,7 @@ class FakeResponse:
         return data
 
 
-def fake_get(url):
+def fake_get(url, timeout):
     return FakeResponse()
 
 
@@ -27,11 +27,11 @@ class FakeErrorResponse:
         raise error
 
 
-def fake_get_404(url):
+def fake_get_404(url, timeout):
     return FakeErrorResponse(404)
 
 
-def fake_get_500(url):
+def fake_get_500(url, timeout):
     return FakeErrorResponse(500)
 
 

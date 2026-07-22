@@ -16,7 +16,7 @@ def get_heroes_data(url):
 
     for n in range(retries):
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=5)
             response.raise_for_status()
             data = response.json()
             return data
@@ -34,9 +34,16 @@ def get_heroes_data(url):
 
 
 def highest_character(gender, has_job):
+    if gender not in ("Male", "Female"):
+        raise ValueError("gender must be Male or Female")
+
+    if not isinstance(has_job, bool):
+        raise TypeError("has_job must be bool")
+
     heroes_data = get_heroes_data(url="https://akabab.github.io/superhero-api/api/all.json")
     highest_height = 0
     highest_hero = None
+
     for character_stats in heroes_data:
         character_job = character_stats["work"]["occupation"] != "-"
 
