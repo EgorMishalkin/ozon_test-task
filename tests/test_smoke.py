@@ -17,3 +17,5 @@ def test_smoke_employed_female():
     height = float(result["appearance"]["height"][1].split()[0])
     assert height > 0
 
+
+
