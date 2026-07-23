@@ -7,13 +7,14 @@ from requests.exceptions import HTTPError
 def get_heroes_data(url):
     retries = 3
     retry_codes = [
-        HTTPStatus.TOO_MANY_REQUESTS,
-        HTTPStatus.INTERNAL_SERVER_ERROR,
-        HTTPStatus.BAD_GATEWAY,
-        HTTPStatus.SERVICE_UNAVAILABLE,
-        HTTPStatus.GATEWAY_TIMEOUT,
+        HTTPStatus.TOO_MANY_REQUESTS, #429
+        HTTPStatus.INTERNAL_SERVER_ERROR, #500
+        HTTPStatus.BAD_GATEWAY, #502
+        HTTPStatus.SERVICE_UNAVAILABLE, #503
+        HTTPStatus.GATEWAY_TIMEOUT, #504
     ]
 
+    # try the request up to three times for retryable HTTP errors
     for n in range(retries):
         try:
             response = requests.get(url, timeout=5)
@@ -28,7 +29,6 @@ def get_heroes_data(url):
                 # retry after n seconds
                 time.sleep(n)
                 continue
-
             raise
     return None
 
@@ -50,12 +50,16 @@ def highest_character(gender, has_job):
         if character_stats["appearance"]["gender"] == gender:
             if character_job == has_job:
                 try:
+                    # this line gives character's height in cm
                     character_height = float(character_stats["appearance"]["height"][1].split()[0])
                 except (ValueError, IndexError, TypeError, KeyError):
+                    # Skip heroes with missing or invalid height
                     continue
+
                 if character_height > highest_height:
                     highest_height = character_height
                     highest_hero = character_stats
+
     return highest_hero
 
 

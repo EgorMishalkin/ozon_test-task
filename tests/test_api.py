@@ -5,6 +5,7 @@ from unittest.mock import Mock
 
 data = [{"name": "Test Hero"}]
 
+# class for successful responses
 class FakeResponse:
     def raise_for_status(self):
         pass
@@ -13,10 +14,7 @@ class FakeResponse:
         return data
 
 
-def fake_get(url, timeout):
-    return FakeResponse()
-
-
+# class for responses with error
 class FakeErrorResponse:
     def __init__(self, status_code):
         self.status_code = status_code
@@ -25,6 +23,10 @@ class FakeErrorResponse:
         error = HTTPError()
         error.response = self
         raise error
+
+
+def fake_get(url, timeout):
+    return FakeResponse()
 
 
 def fake_get_404(url, timeout):
@@ -36,6 +38,7 @@ def fake_get_500(url, timeout):
 
 
 def test_data_loaded_successfully(monkeypatch):
+    # replace request to API with fake_get to check if get_heroes_data is working properly
     monkeypatch.setattr(main.requests, "get", fake_get)
     result = main.get_heroes_data("fake-url")
 
@@ -53,6 +56,7 @@ def test_error_after_3_attempts(monkeypatch):
     mock_get = Mock(side_effect=fake_get_500)
 
     monkeypatch.setattr(main.requests, "get", mock_get)
+    # disable delays
     monkeypatch.setattr(main.time, "sleep", lambda seconds: None)
 
     result = main.get_heroes_data("fake-url")

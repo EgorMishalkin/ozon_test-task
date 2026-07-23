@@ -35,13 +35,15 @@ def fake_get_heroes_data(url):
                 "gender": "Female",
                 "height": ["8'2", "175 cm"]
             },
-            "work": {"occupation": "Streamer"}},
+            "work": {"occupation": "Streamer"}
+        },
         {   "name": "Hero Five",
             "appearance": {
                 "gender": "Female",
                 "height": ["8'2", "200 cm"]
             },
-            "work": {"occupation": "-"}},
+            "work": {"occupation": "-"}
+        },
         {   "name": "Hero Six",
             "appearance": {
                 "gender": "Female",
@@ -51,8 +53,9 @@ def fake_get_heroes_data(url):
     ]
 
 
+# 4 tests below are the all possible scenarios with valid gender and work
 def test_highest_employed_male(monkeypatch):
-    monkeypatch.setattr(main,"get_heroes_data",fake_get_heroes_data)
+    monkeypatch.setattr(main,"get_heroes_data", fake_get_heroes_data)
 
     result = main.highest_character("Male", True)
 
@@ -61,7 +64,7 @@ def test_highest_employed_male(monkeypatch):
 
 
 def test_highest_unemployed_male(monkeypatch):
-    monkeypatch.setattr(main,"get_heroes_data",fake_get_heroes_data)
+    monkeypatch.setattr(main,"get_heroes_data", fake_get_heroes_data)
 
     result = main.highest_character("Male", False)
 
@@ -70,7 +73,7 @@ def test_highest_unemployed_male(monkeypatch):
 
 
 def test_highest_unemployed_female(monkeypatch):
-    monkeypatch.setattr(main,"get_heroes_data",fake_get_heroes_data)
+    monkeypatch.setattr(main,"get_heroes_data", fake_get_heroes_data)
     result = main.highest_character("Female", False)
 
     assert result is not None
@@ -83,6 +86,7 @@ def test_highest_employed_female(monkeypatch):
 
     assert result is not None
     assert result["name"] == "Hero Four"
+
 
 def test_invalid_gender():
     with pytest.raises(ValueError):
@@ -115,7 +119,7 @@ def test_skip_invalid_height(monkeypatch):
             }
         ]
 
-    monkeypatch.setattr(main, "get_heroes_data", fake_get_invalid_height_data)
+    monkeypatch.setattr(main,"get_heroes_data", fake_get_invalid_height_data)
 
     result = main.highest_character("Male", True)
 
